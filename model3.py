@@ -24,6 +24,7 @@ catagory = ['B', 'D', 'R', 'S']
 datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
 
 
+
 # training data
 train_data = datagen.flow_from_directory(
     data_dir,
@@ -43,20 +44,16 @@ val_data = datagen.flow_from_directory(
 
 
 model = Sequential([
-  layers.Conv2D(15, (7, 7), activation='relu', input_shape=input_shape),
+  layers.Conv2D(15, (3, 3), activation='relu', input_shape=input_shape),
   layers.MaxPooling2D((2, 2)),
-  layers.Conv2D(30, (3, 3), activation='relu'),
-  layers.BatchNormalization(axis=1) ,
+  layers.Conv2D(35, (3, 3), activation='relu'),
+  layers.MaxPooling2D((2, 2)),
+  layers.Conv2D(75, (3, 3), activation='relu'),
   layers.Dense(50, activation='relu'),
   layers.Dropout(0.3),
   layers.MaxPooling2D((2, 2)),
-  layers.Conv2D(30, (3, 3), activation='relu'),
-  layers.BatchNormalization(axis=1) ,
-  layers.Dense(90, activation='relu'),
-  layers.Dropout(0.3),
-  layers.MaxPooling2D((2, 2)),
   layers.Flatten(),
-  layers.Dense(115, activation='relu'),
+  layers.Dense(75, activation='relu'),
   layers.Dropout(0.5),
   layers.Dense(num_classes, activation='softmax')
 ])

@@ -112,7 +112,7 @@ class PlotLosses(Callback):
         # plt.pause(0.01)
 
 
-checkpoint = ModelCheckpoint('model5.h5', verbose=1, monitor='val_accuracy',save_best_only=True, mode='max')
+checkpoint = ModelCheckpoint('model/model5.h5', verbose=1, monitor='val_accuracy',save_best_only=True, mode='max')
 plot_losses = PlotLosses()
 
 #Train Model
