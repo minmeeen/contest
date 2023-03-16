@@ -45,7 +45,7 @@ pred_labels = np.argmax(pred_probs, axis=1)
 pred_class_names = [category[label] for label in pred_labels]
 
 
-f = open("result1.txt", "w")
+f = open("result.txt", "w")
 # Print the predicted class labels for each image
 for i in range(len(dataframe)):
     f.write(f'{dataframe.iloc[i]["filename"]}::{pred_class_names[i]}\n')
