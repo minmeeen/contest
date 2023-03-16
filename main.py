@@ -14,7 +14,7 @@ import numpy as np
 data_dir = 'dataset'
 
 # input shape of the images
-input_shape = (224, 224, 3)
+input_shape = (256, 256, 3)
 
 # class
 num_classes = 4
@@ -43,31 +43,24 @@ val_data = datagen.flow_from_directory(
 
 
 model = Sequential([
-  # Convolutional layer with 32 filters, 3x3 kernel size, and ReLU activation function
-  layers.Conv2D(15, (3, 3), activation='relu', input_shape=input_shape),
-  # Max pooling layer with 2x2 pool size
+  layers.Conv2D(25, (3, 3), activation='relu', input_shape=input_shape),
   layers.MaxPooling2D((2, 2)),
-  # Convolutional layer with 64 filters, 3x3 kernel size, and ReLU activation function
   layers.Conv2D(35, (3, 3), activation='relu'),
-  # Dropout layer to prevent overfitting
-  layers.Dropout(0.2),
-  # Max pooling layer with 2x2 pool size
   layers.MaxPooling2D((2, 2)),
-  # Convolutional layer with 128 filters, 3x3 kernel size, and ReLU activation function
+  layers.Dropout(0.3),
   layers.Conv2D(75, (3, 3), activation='relu'),
+  layers.Conv2D(75, (3, 3), activation='relu'),
+  layers.BatchNormalization(),
+  layers.MaxPooling2D((2, 2)),
   layers.Dense(80, activation='relu'),
   layers.Dropout(0.3),
-  # Max pooling layer with 2x2 pool size
-  layers.MaxPooling2D((2, 2)),
-  # Flatten layer to convert the 3D feature maps to a 1D feature vector
   layers.Flatten(),
-  # Dense layer with 256 neurons and ReLU activation function
-  layers.Dense(125, activation='relu'),
-  # Dropout layer to prevent overfitting
+  layers.Dense(115, activation='relu'),
   layers.Dropout(0.5),
-  # Output layer with softmax activation function for multi-class classification
   layers.Dense(num_classes, activation='softmax')
 ])
+
+
 
 # Compile 
 model.compile(optimizer=Adam(lr = 1e-4), loss='categorical_crossentropy', metrics=['accuracy'])
@@ -111,7 +104,8 @@ class PlotLosses(Callback):
         # plt.pause(0.01)
 
 
-checkpoint = ModelCheckpoint('model1-2.h5', verbose=1, monitor='val_accuracy',save_best_only=True, mode='max')
+checkpoint = ModelCheckpoint('model/model1-2.h5', verbose=1, monitor='val_accuracy',save_best_only=True, mode='max')
+# checkpoint = ModelCheckpoint('model/model1-3.h5', verbose=1, monitor='val_accuracy',save_best_only=True, mode='max')
 plot_losses = PlotLosses()
 
 #Train Model
@@ -125,7 +119,8 @@ model.fit_generator(
 
 
 #Test Model
-model = load_model('model1-2.h5')
+# model = load_model('model/model1-3.h5')
+model = load_model('model/model1-2.h5')
 score = model.evaluate_generator(
     test_data,
     steps=len(test_data))
